@@ -5,6 +5,11 @@
 ```bash
 $ GOOS=linux GOARCH=amd64 go build -o hello
 $ zip lambda.zip hello
+```
+
+build infrastructure.
+
+```bash
 $ docker-compose up -d
 $ terraform init
 $ terraform plan
