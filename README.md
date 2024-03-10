@@ -24,4 +24,12 @@ Run like below.
 ```bash
 $ awslocal s3 ls
 $ awslocal kinesis list-streams
+$ awslocal lambda invoke --function-name local-lambda output.log
+$ awslocal kinesis put-record --stream-name local-stream --partition-key 123 --data testdata
+{
+    "ShardId": "shardId-000000000000",
+	"SequenceNumber": "49650018658960598395323651862376970603350306529631797250",
+	"EncryptionType": "NONE"
+}
+$ awslocal kinesis get-records --shard-iterator `awslocal kinesis get-shard-iterator --stream-name local-stream --shard-id shardId-000000000000 --shard-iterator-type AT_SEQUENCE_NUMBER --starting-sequence-number 49650018658960598395323651862375761677530678156561743874 | jq ".ShardIterator"`
 ```
