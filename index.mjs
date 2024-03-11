@@ -1,6 +1,4 @@
-import { S3Client } from "@aws-sdk/client-s3";
-
-console.log(S3Client);
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 export const handler = async(event) => {
     let body = JSON.parse(event.body);

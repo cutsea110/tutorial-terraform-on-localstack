@@ -5,7 +5,7 @@ ref.) https://future-architect.github.io/articles/20201113/
 # build lambda
 
 ```bash
-$ zip function.zip index.js
+$ zip function.zip index.mjs
 ```
 
 build infrastructure.
