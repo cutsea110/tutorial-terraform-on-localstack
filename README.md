@@ -1,5 +1,7 @@
 # tutorial-terraform-on-localstack
 
+ref.) https://future-architect.github.io/articles/20201113/
+
 # build lambda
 
 ```bash
