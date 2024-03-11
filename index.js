@@ -1,9 +1,21 @@
-exports.handler = async (event) => {
-    let body = JSON.parse(event.body)
-    const product = body.num1 * body.num2;
-    const response = {
-	statusCode: 200,
-	body: "The product of " + body.num1 + " and " + body.num2 + " is " + product,
+import { S3Client } from "@aws-sdk/client-s3";
+
+console.log(S3Client);
+
+export const handler = async(event) => {
+    let body = JSON.parse(event.body);
+    const product = body.num1 + body.num2;
+
+    const s3 = new S3Client({});
+    const params = {
+	Bucket: "local-archive",
+	Key: "test" + Date.now() + ".json",
+	Body: JSON.stringify({ product }),
     };
-    return response;
+    await s3.send(new PutObjectCommand(params));
+
+    return {
+	statusCode: 200,
+	body: JSON.stringify({ product }),
+    };
 };
