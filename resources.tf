@@ -5,7 +5,7 @@ resource "aws_kinesis_stream" "local_stream" {
 }
 resource "aws_lambda_event_source_mapping" "local_mapping" {
   event_source_arn                   = aws_kinesis_stream.local_stream.arn
-  function_name                      = aws_lambda_function.local_lambda.arn
+  function_name                      = aws_lambda_function.local_lambda.function_name
   starting_position                  = "LATEST"
   maximum_retry_attempts             = 1
   batch_size                         = 100
