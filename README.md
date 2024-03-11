@@ -5,8 +5,7 @@ ref.) https://future-architect.github.io/articles/20201113/
 # build lambda
 
 ```bash
-$ GOOS=linux GOARCH=amd64 go build -o hello
-$ zip lambda.zip hello
+$ zip function.zip index.js
 ```
 
 build infrastructure.
@@ -28,15 +27,17 @@ $ alias awslocal='AWS_ACCESS_KEY_ID=dummy AWS_SECRET_ACCESS_KEY=dummy AWS_DEFAUL
 
 Run like below.
 
+[WARN] you must this setting item in your ~/.aws/config
+
+```
+[default]
+cli_binary_format=raw-in-base64-out
+```
+
 ```bash
 $ awslocal s3 ls
 $ awslocal kinesis list-streams
-$ awslocal lambda invoke --function-name local-lambda output.log
-$ awslocal kinesis put-record --stream-name local-stream --partition-key 123 --data testdata
-{
-    "ShardId": "shardId-000000000000",
-	"SequenceNumber": "49650018658960598395323651862376970603350306529631797250",
-	"EncryptionType": "NONE"
-}
+$ awslocal lambda invoke --function-name local-lambda --payload '{"body":"{\"num1\":\"10\",\"num2\":\"10\"}"}' output.txt
+$ awslocal kinesis put-record --stream-name local-stream --partition-key 123 --data '{"body":"{\"num1\":\"10\",\"num2\":\"10\"}"}'
 $ awslocal kinesis get-records --shard-iterator `awslocal kinesis get-shard-iterator --stream-name local-stream --shard-id shardId-000000000000 --shard-iterator-type AT_SEQUENCE_NUMBER --starting-sequence-number 49650018658960598395323651862375761677530678156561743874 | jq ".ShardIterator"`
 ```

@@ -12,11 +12,11 @@ resource "aws_lambda_event_source_mapping" "local_mapping" {
   maximum_batching_window_in_seconds = 5
 }
 resource "aws_lambda_function" "local_lambda" {
-  filename      = "lambda.zip"
+  filename      = "function.zip"
   function_name = "local-lambda"
   role          = aws_iam_role.local_role.arn
-  handler       = "lambda"
-  runtime       = "go1.x"
+  handler       = "index.handler"
+  runtime       = "nodejs18.x"
 }
 resource "aws_iam_role" "local_role" {
   name = "local-role"
