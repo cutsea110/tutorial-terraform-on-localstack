@@ -5,6 +5,7 @@ ref.) https://future-architect.github.io/articles/20201113/
 # build lambda
 
 ```bash
+$ rm function.zip
 $ zip function.zip index.mjs
 ```
 
@@ -38,7 +39,7 @@ cli_binary_format=raw-in-base64-out
 $ awslocal s3 ls
 $ awslocal kinesis list-streams
 $ awslocal lambda invoke --function-name local-lambda --payload "{\"Records\": [{\"kinesis\": {\"data\": \"$(base64 payload.json)\"}}]}" output.txt
-$ awslocal kinesis put-record --stream-name local-stream --partition-key 123 --data '{"body":{"num1":10,"num2":10}}'
-$ awslocal kinesis put-record --stream-name local-stream --partition-key 123 --data $(cat payload.json)
+$ awslocal kinesis put-record --stream-name local-stream --partition-key `date +%s` --data '{"body":{"num1":10,"num2":10}}'
+$ awslocal kinesis put-record --stream-name local-stream --partition-key `date +%s` --data $(cat payload.json)
 $ awslocal kinesis get-records --shard-iterator `awslocal kinesis get-shard-iterator --stream-name local-stream --shard-id shardId-000000000000 --shard-iterator-type AT_SEQUENCE_NUMBER --starting-sequence-number 49650018658960598395323651862375761677530678156561743874 | jq ".ShardIterator"`
 ```
