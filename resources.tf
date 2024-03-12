@@ -17,6 +17,10 @@ resource "aws_lambda_function" "local_lambda" {
   role          = aws_iam_role.local_role.arn
   handler       = "index.handler"
   runtime       = "nodejs18.x"
+
+  dead_letter_config {
+    target_arn = aws_sqs_queue.local_dlq.arn
+  }
 }
 resource "aws_iam_role" "local_role" {
   name = "local-role"
@@ -61,6 +65,14 @@ data "aws_iam_policy_document" "local_policy_document" {
     ]
     resources = ["*"]
   }
+  statement {
+    effect = "Allow"
+    actions   = [
+      "sns:Publish",
+      "sns:SendMessage",
+    ]
+    resources = ["*"]
+  }
 }
 resource "aws_iam_role_policy_attachment" "local_policy_attachment" {
   role       = aws_iam_role.local_role.name
@@ -74,4 +86,7 @@ resource "aws_s3_bucket_versioning" "local_archive_versioning" {
   versioning_configuration {
     status = "Disabled"
   }
+}
+resource "aws_sqs_queue" "local_dlq" {
+  name = "local-dlq"
 }
