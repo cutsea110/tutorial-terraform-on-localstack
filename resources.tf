@@ -10,6 +10,12 @@ resource "aws_lambda_event_source_mapping" "local_mapping" {
   maximum_retry_attempts             = 1
   batch_size                         = 100
   maximum_batching_window_in_seconds = 5
+
+  destination_config {
+    on_failure {
+      destination_arn = aws_sqs_queue.local_dlq.arn
+    }
+  }
 }
 resource "aws_lambda_function" "local_lambda" {
   filename      = "function.zip"
@@ -17,10 +23,6 @@ resource "aws_lambda_function" "local_lambda" {
   role          = aws_iam_role.local_role.arn
   handler       = "index.handler"
   runtime       = "nodejs18.x"
-
-  dead_letter_config {
-    target_arn = aws_sqs_queue.local_dlq.arn
-  }
 }
 resource "aws_iam_role" "local_role" {
   name = "local-role"
