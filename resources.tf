@@ -10,11 +10,6 @@ resource "aws_lambda_event_source_mapping" "local_mapping" {
   maximum_retry_attempts             = 1
   batch_size                         = 100
   maximum_batching_window_in_seconds = 5
-  destination_config {
-    on_failure {
-      destination_arn = aws_s3_bucket.local_dlq.arn
-    }
-  }
 }
 resource "aws_lambda_function" "local_lambda" {
   filename      = "function.zip"
@@ -76,16 +71,6 @@ resource "aws_s3_bucket" "local_archive" {
 }
 resource "aws_s3_bucket_versioning" "local_archive_versioning" {
   bucket = aws_s3_bucket.local_archive.id
-  versioning_configuration {
-    status = "Disabled"
-  }
-}
-
-resource "aws_s3_bucket" "local_dlq" {
-  bucket = "local-dql"
-}
-resource "aws_s3_bucket_versioning" "local_dlq_versioning" {
-  bucket = aws_s3_bucket.local_dlq.id
   versioning_configuration {
     status = "Disabled"
   }
