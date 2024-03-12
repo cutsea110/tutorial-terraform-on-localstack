@@ -23,7 +23,7 @@ $ terraform apply
 Prepare for aws command line.
 
 ```bash
-$ alias awslocal='AWS_ACCESS_KEY_ID=dummy AWS_SECRET_ACCESS_KEY=dummy AWS_DEFAULT_REGION=us-west-1 aws --endpoint-url http://localhost:4566'
+$ alias awslocal='AWS_ACCESS_KEY_ID=dummy AWS_SECRET_ACCESS_KEY=dummy AWS_DEFAULT_REGION=ap-northeast-1 aws --endpoint-url http://localhost:4566'
 ```
 
 Run like below.
