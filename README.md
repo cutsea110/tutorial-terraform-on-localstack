@@ -56,7 +56,6 @@ You found the message in dead-letter-queue instead of an object in s3 bucket.
 ```bash
 $ awslocal sqs list-queues | jq '.QueueUrls[0]'
 "http://sqs.ap-northeast-1.localhost.localstack.cloud:4566/000000000000/local-dlq"
-cutsea110@lanikai ~/devel/aws (main *)
 $ awslocal sqs get-queue-attributes --queue-url "http://sqs.ap-northeast-1.localhost.localstack.cloud:4566/000000000000/local-dlq" --attribute-names ApproximateNumberOfMessages
 {
     "Attributes": {
