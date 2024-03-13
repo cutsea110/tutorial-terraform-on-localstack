@@ -67,14 +67,6 @@ data "aws_iam_policy_document" "local_policy_document" {
     ]
     resources = ["*"]
   }
-  statement {
-    effect = "Allow"
-    actions   = [
-      "sns:Publish",
-      "sns:SendMessage",
-    ]
-    resources = ["*"]
-  }
 }
 resource "aws_iam_role_policy_attachment" "local_policy_attachment" {
   role       = aws_iam_role.local_role.name
