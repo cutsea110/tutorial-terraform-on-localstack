@@ -38,6 +38,7 @@ Run like below.
 ```bash
 $ awslocal s3 ls
 $ awslocal kinesis list-streams
+$ awslocal sqs list-queues
 $ awslocal lambda invoke --function-name local-lambda --payload "{\"Records\": [{\"kinesis\": {\"data\": \"$(base64 payload.json)\"}}]}" output.txt
 $ awslocal kinesis put-record --stream-name local-stream --partition-key `date +%s` --data '{"body":{"num1":10,"num2":10}}'
 $ awslocal kinesis put-record --stream-name local-stream --partition-key `date +%s` --data $(cat payload.json)
@@ -53,6 +54,15 @@ $ awslocal kinesis put-record --stream-name local-stream --partition-key `date +
 You found the message in dead-letter-queue instead of an object in s3 bucket.
 
 ```bash
+$ awslocal sqs list-queues | jq '.QueueUrls[0]'
+"http://sqs.ap-northeast-1.localhost.localstack.cloud:4566/000000000000/local-dlq"
+cutsea110@lanikai ~/devel/aws (main *)
+$ awslocal sqs get-queue-attributes --queue-url "http://sqs.ap-northeast-1.localhost.localstack.cloud:4566/000000000000/local-dlq" --attribute-names ApproximateNumberOfMessages
+{
+    "Attributes": {
+         "ApproximateNumberOfMessages": "1"
+    }
+}
 $ awslocal sqs receive-message --queue-url "http://sqs.ap-northeast-1.localhost.localstack.cloud:4566/000000000000/local-dlq"
 {
     "Messages": [
